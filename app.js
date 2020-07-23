@@ -3,9 +3,9 @@ const app = express();
 const mongoose = require('mongoose');
 require('dotenv/config');
 
-app.use('/posts', () => {
-    console.log('This is a middleware running')
-});
+const postsRoute = require('./routes/posts');
+
+app.use('/posts', postsRoute);
 
 app.get('/', (req,res) => {
     res.send('server running')
