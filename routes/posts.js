@@ -13,10 +13,6 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/:id', (req, res) => {
-    res.send('Specific post');
-});
-
 router.post('/', async (req, res) => {
     const post = new Post({
         title: req.body.title,
@@ -27,6 +23,24 @@ router.post('/', async (req, res) => {
     res.json(savedPost);
     }catch(err){
         res.json({ message: err });
+    }
+})
+
+router.get('/:postId', async(req,res) => {
+    try{
+        const post = await Post.findById(req.params.postId);
+        res.json(post);
+    }catch(err){
+        res.json({message: err});
+    }
+});
+
+router.delete('/:postId', async (req, res)=> {
+    try{
+        const removedPost = await Post.remove({ _id: req.params.postId })
+        res.json(removedPost);
+    }catch(err){
+        res.json({messsage: err});
     }
 })
 
