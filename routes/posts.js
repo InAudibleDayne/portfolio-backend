@@ -15,8 +15,14 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const post = new Post({
-        title: req.body.title,
-        description: req.body.description
+        name: req.body.name,
+        description: req.body.description,
+        category: req.body.category,
+        tags: req.body.tags,
+        thumb_image_url: req.body.thumb_image_url,
+        logo_url: req.body.logo_url,
+        banner_image_url: req.body.banner_image_url,
+        url: req.body.url
     });
     try{
     const savedPost = await post.save();
@@ -50,8 +56,14 @@ router.patch('/:postId', async(req, res) => {
         { _id: req.params.postId}, 
         { $set: 
             {
-                title: req.body.title,
-                description: req.body.description
+                name: req.body.name,
+                description: req.body.description,
+                category: req.body.category,
+                tags: req.body.tags,
+                thumb_image_url: req.body.thumb_image_url,
+                logo_url: req.body.logo_url,
+                banner_image_url: req.body.banner_image_url,
+                url: req.body.url
             }
         });
     res.json(updatePost)

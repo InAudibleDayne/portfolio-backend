@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 //Temporary example schema
 const PostSchema = mongoose.Schema({
-    title: {
+    name: {
         type: String,
         required: true
     },
@@ -11,9 +11,27 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    date: {
-        type: Date,
-        default: Date.now
+    category: {
+        type: String,
+        required: true
+    },
+    tags: {
+        type: Array
+    },
+    thumb_image_url: {
+        type: String,
+        required: true
+    },
+    logo_url: {
+        type: String
+    },
+    banner_image_url: {
+        type: String,
+        requried: true
+    },
+    url: {
+        type: String,
+        required: true
     }
 });
 
