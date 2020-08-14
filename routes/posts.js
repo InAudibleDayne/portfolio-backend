@@ -72,4 +72,14 @@ router.patch('/:postId', async(req, res) => {
     };
 })
 
+router.get('/filter/:category', async(req, res)=>
+{
+    try {
+        const postByCategory = await Post.find({category: req.params.category});
+        res.json(postByCategory);
+    }catch(err){
+        res.json({message: err});
+    };
+})
+
 module.exports = router;
