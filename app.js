@@ -5,8 +5,15 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv/config');
 
+var corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+    allowedHeaders: 'Authorization'
+}
+
 //Middlewaress
-app.use(cors());
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions))
 app.use(bodyParser.json());
 
 const postsRoute = require('./routes/posts');
