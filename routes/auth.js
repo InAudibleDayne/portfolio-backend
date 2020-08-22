@@ -10,9 +10,15 @@ const getHashedPassword = (password) => {
     return hash;
 }
 
+const generateAuthToken = () => {
+    return crypto.randomBytes(30).toString('hex');
+}
+
+const authTokens = {};
+
 router.post('/', async(req, res) => {
     const { email, password } = req.body;
-    
+
 });
 
 module.exports = router;
