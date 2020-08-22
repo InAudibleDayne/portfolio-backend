@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 require('dotenv/config');
 
@@ -15,10 +16,13 @@ var corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions))
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 const postsRoute = require('./routes/posts');
+const authRoute = require('./routes/posts');
 
 app.use('/posts', postsRoute);
+app.use('/auth', authRoute)
 
 app.get('/', (req,res) => {
     res.send('server running')
