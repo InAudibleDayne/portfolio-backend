@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 const postsRoute = require('./routes/posts');
-const authRoute = require('./routes/posts');
+const authRoute = require('./routes/auth');
 
 app.use('/posts', postsRoute);
 app.use('/auth', authRoute)

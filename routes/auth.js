@@ -16,9 +16,15 @@ const generateAuthToken = () => {
 
 const authTokens = {};
 
-router.post('/', async(req, res) => {
+router.get('/', (req, res) => {
     const { email, password } = req.body;
+    const hashedPassword = getHashedPassword(password);
 
+    if (email === process.env.SECRET_USER && hashedPassword === process.env.SECRET_PWD){
+        res.json({message: 'test successful'})
+    } else {
+        res.json({message: 'error'})
+    }
 });
 
 module.exports = router;
