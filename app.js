@@ -9,7 +9,7 @@ require('dotenv/config');
 var corsOptions = {
     origin: 'http://localhost:3000',
     credentials: true,
-    allowedHeaders: 'Authorization'
+    allowedHeaders: 'Content-Type,Authorization'
 }
 
 //Middlewaress
@@ -22,7 +22,15 @@ const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');
 
 app.use('/posts', postsRoute);
-app.use('/auth', authRoute)
+app.use('/auth', authRoute);
+
+app.use((req, res, next) => {
+    const authToken = req.cookies['AuthToken'];
+
+    req.user = authTokens[authToken];
+    
+    next();
+})
 
 app.get('/', (req,res) => {
     res.send('server running')
