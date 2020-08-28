@@ -14,20 +14,28 @@ const generateAuthToken = () => {
     return crypto.randomBytes(30).toString('hex');
 }
 
+const authTokens = {};
+
 router.post('/', (req, res) => {
-    const authTokens = {};
     const { email, password } = req.body.client;
     const hashedPassword = getHashedPassword(password);
 
     if (email === process.env.SECRET_USER && hashedPassword === process.env.SECRET_PWD){
-        const authToken = generateAuthToken();
+        const authToken = generateAuthToken().toString();
 
         authTokens[authToken] = email;
         res.cookie('AuthToken', authToken);
         res.json({status: 'created'})
+        console.log(authTokens)
     } else {
         res.json({status: 'invalid credentials'})
     }
 });
+
+router.delete('/logout', (req, res) => {
+    const authTokens = {};
+    console.log(authTokens);
+    res.json({status: 'logged out'});
+})
 
 module.exports = router;
