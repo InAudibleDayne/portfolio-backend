@@ -23,7 +23,9 @@ router.post('/', (req, res) => {
     if (email === process.env.SECRET_USER && hashedPassword === process.env.SECRET_PWD){
         const authToken = generateAuthToken().toString();
 
-        authTokens[authToken] = email;
+        var authEntry = {email: `${email}`, auth: `${authToken}`}
+
+        authTokens.push(authEntry);
         res.cookie('AuthToken', authToken);
         res.json({status: 'created'})
         console.log(authTokens)
@@ -36,6 +38,12 @@ router.delete('/logout', (req, res) => {
     const authTokens = {};
     console.log(authTokens);
     res.json({status: 'logged out'});
+})
+
+router.get('/logged_in', (req, res) => {
+    // NEED TO WRITE AUTH MODEL SO I CAN ACTUALLY QUERY THIS
+    // const authCheck = authTokens.filter(authToken => authToken.email === req.body.email);
+    // console.log(authCheck);
 })
 
 module.exports = router;
