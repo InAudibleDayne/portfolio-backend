@@ -37,9 +37,18 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.delete('/logout', (req, res) => {
+router.get('/', async (req, res) => {
+    try{
+        const authTokens = await Auth.find();
+        res.json(authTokens);
+    }catch(err){
+        res.json({ message: err })
+    }
+})
+
+router.delete('/logout', async(req, res) => {
     try {
-        const removedAuthToken = Auth.remove();
+        const removedAuthToken = await Auth.deleteMany({});
         res.json({status: 200});
     }catch(err){
         console.log(err)
