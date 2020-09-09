@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 const router = express.Router();
 const { restart } = require('nodemon');
-const Auth = require('../models/Auth');
+const AuthRequest = require('../models/Auth');
 
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
@@ -18,21 +18,19 @@ const generateAuthToken = () => {
 router.post('/', async (req, res) => {
     const { email, password } = req.body.client;
     const hashedPassword = getHashedPassword(password);
-
     if (email === process.env.SECRET_USER && hashedPassword === process.env.SECRET_PWD){
         const authToken = generateAuthToken().toString();
 
-        var authEntry = new Auth({
+        var authEntry = new AuthRequest({
             user: email,
             authToken: authToken
         });
-
         try{
-            const savedAuth = Auth.save();
+            const savedAuth = await authEntry.save();
             res.cookie('AuthToken', authToken);
             res.json({status: 'created'})
         }catch(err){
-            res.json({status: 'error'})
+            res.json({status: `error: ${err}`})
         }
     } else {
         res.json({status: 'invalid credentials'})
