@@ -39,8 +39,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try{
-        const authTokens = await Auth.find();
-        res.json(authTokens);
+        const allTokens = await Auth.find();
+        res.json(allTokens);
     }catch(err){
         res.json({ message: err })
     }
@@ -55,10 +55,19 @@ router.delete('/logout', async(req, res) => {
     }
 })
 
-router.get('/logged_in', (req, res) => {
+router.get('/logged_in', async (req, res) => {
     // NEED TO WRITE AUTH MODEL SO I CAN ACTUALLY QUERY THIS
-    // const authCheck = authTokens.filter(authToken => authToken.email === req.body.email);
-    // console.log(authCheck);
+    try{
+        const checkAuth = await Auth.find();
+        if(checkAuth != null){
+            res.json({logged_in: true});
+        }else{
+            res.json({logged_in: false});
+        }
+    } catch(err) {
+        res.json({err: `${err}`});
+    }
+
 })
 
 module.exports = router;
