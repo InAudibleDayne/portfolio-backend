@@ -3,7 +3,7 @@ const crypto = require('crypto');
 
 const router = express.Router();
 const { restart } = require('nodemon');
-const AuthRequest = require('../models/Auth');
+const Auth = require('../models/Auth');
 
 const getHashedPassword = (password) => {
     const sha256 = crypto.createHash('sha256');
@@ -21,7 +21,7 @@ router.post('/', async (req, res) => {
     if (email === process.env.SECRET_USER && hashedPassword === process.env.SECRET_PWD){
         const authToken = generateAuthToken().toString();
 
-        var authEntry = new AuthRequest({
+        var authEntry = new Auth({
             user: email,
             authToken: authToken
         });
@@ -38,9 +38,12 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/logout', (req, res) => {
-    const authTokens = {};
-    console.log(authTokens);
-    res.json({status: 'logged out'});
+    try {
+        const removedAuthToken = Auth.remove();
+        res.json({status: 200});
+    }catch(err){
+        console.log(err)
+    }
 })
 
 router.get('/logged_in', (req, res) => {
