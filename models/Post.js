@@ -18,14 +18,12 @@ const PostSchema = new mongoose.Schema({
     },
     thumb_image_url: {
         type: String,
-        required: true
     },
     logo_url: {
         type: String
     },
     banner_image_url: {
         type: String,
-        requried: true
     },
     url: {
         type: String,
