@@ -16,13 +16,21 @@ var corsOptions = {
 //Middlewaress
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions))
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    limit: '50mb',
+    extended: 'true'
+}));
+app.use(bodyParser.json({
+    limit: '50mb',
+    extended: 'true'
+}));
 app.use(cookieParser());
-app.use('/posts/post', formidableMiddleware({
-    encoding: 'utf-8',
-    uploadDir: 'uploads/',
-    multiples: true
-}))
+// This will only work for upload specific paths
+// app.use('/posts/post', formidableMiddleware({
+//     encoding: 'utf-8',
+//     uploadDir: 'uploads/',
+//     multiples: true
+// }))
 
 const postsRoute = require('./routes/posts');
 const authRoute = require('./routes/auth');
