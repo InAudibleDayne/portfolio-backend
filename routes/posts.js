@@ -14,22 +14,24 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/post', async (req, res) => {
     var form = formidable({ multiples: true })
     const parsedForm = form.parse(req, async (err, fields, files) => {
-        if (err) {
-          next(err);
-          return;
-        }
-        console.log(fields, files)
+        files.banner_image.path = '../uploads/' +  files.banner_image.name
+        files.thumb_image.path = '../uploads/' +  files.thumb_image.name
+        files.logo.path = '../uploads/' +  files.logo.name
+        const banner_image_path = files.banner_image.path;
+        const thumb_image_path = files.thumb_image.path;
+        const logo_path = files.logo.path;
+        console.log(banner_image_path, thumb_image_path, logo_path);
         const post = new Post({
             name: fields.name,
             description: fields.description,
             category: fields.category,
             tags: fields.tags,
-            thumb_image_url: fields.thumb_image,
-            logo_url: fields.logo_url,
-            banner_image_url: fields.banner_image_url,
+            thumb_image_url: thumb_image_path || '',
+            logo_url: logo_path || '',
+            banner_image_url: banner_image_path || '',
             url: fields.url
         });
         try{
@@ -89,6 +91,15 @@ router.get('/filter/:category', async(req, res)=>
     }catch(err){
         res.json({message: err});
     };
+})
+
+router.delete('/deleteAll', async(req, res)=>{
+    try {
+        const deleteAll = await Post.deleteMany({});
+        res.json(deleteAll);
+    }catch(err){
+        res.json({message: `${err}`});
+    }
 })
 
 module.exports = router;
